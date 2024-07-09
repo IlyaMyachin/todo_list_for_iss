@@ -1,27 +1,41 @@
-import TasksFilter, {defaultTasksFilter} from '@/types/tasks/TasksFilter'
 import Task from '@/types/tasks/Task'
 
-export interface TasksStateActions {
-    //createTask: (task: Task) => Task[],
-    //updateTask: (task: Task) => Task
-}
-
-export default interface TasksStore {
-    state: {
-        ready: boolean,
-        tasks_count: number,
+export interface TasksFilter {
+    context: {
+        page?: number
+        sort?: {
+            property?: string
+            direction?: 'desc' | 'asc'
+        }
     },
-    tasks_list: Task[]
-    filter: TasksFilter
+    content: {
+        completed: boolean,
+        tasks_count: number,
+        tasks_list: Task[]
+    }
 }
 
-export const defaultTasksStore = (): TasksStore => {
+export const defaultTasksFilter = (): TasksFilter => {
     return {
-        state: {
-            ready: false,
-            tasks_count: 0,
+        context: {
+            page: 1,
+            sort: {
+                property: 'completed',
+                direction: 'desc'
+            }
         },
-        tasks_list: [],
-        filter: defaultTasksFilter()
+        content: {
+            completed: true,
+            tasks_count: 0,
+            tasks_list: [],
+        }
     }
+}
+
+export interface TasksStateActions {
+    addTask: (task: Task) => void
+}
+
+export default interface TasksStore extends TasksStateActions {
+    filter: TasksFilter
 }

@@ -1,4 +1,5 @@
 <template lang="pug">
+ModalComponent
 HeaderComponent
 main
   router-view
@@ -6,16 +7,21 @@ main
 
 <script lang="ts">
 import {defineComponent} from 'vue'
+import useAppStore from '@/pinia/app'
 import HeaderComponent from '@/components/app/Header.vue'
+import ModalComponent from '@/components/app/Modal.vue'
 
 export default defineComponent({
   components: {
-    HeaderComponent
+    HeaderComponent,
+    ModalComponent
   },
   setup() {
-      return {
+    const appStore = useAppStore()
 
-      }
+    return {
+      appStore,
+    }
   },
 })
 
