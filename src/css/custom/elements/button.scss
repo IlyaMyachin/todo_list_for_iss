@@ -1,0 +1,8 @@
+.button{
+  font-weight: $weight-medium;
+  &.is-tiny-rounded {
+    padding: 0.8em;
+    width: 1em;
+    height: 1em;
+  }
+}

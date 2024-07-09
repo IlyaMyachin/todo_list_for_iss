@@ -1,0 +1,16 @@
+html {
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
+
+  &.has-no-scroll{
+    overflow-y: hidden;
+  }
+}
+
+button,
+input,
+optgroup,
+select,
+textarea{
+  transition: $speed;
+}

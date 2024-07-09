@@ -11,8 +11,8 @@ const defineAppStore = defineStore('app', () => {
         hideAppModal()
     }
 
-    const hideAppModal = () => {}
-    const showAppModal = () => {}
+    const hideAppModal = () => state.value.modal.active = false
+    const showAppModal = () => state.value.modal.active = true
 
     return {
         ...{
@@ -26,7 +26,6 @@ const defineAppStore = defineStore('app', () => {
     persist: {
         afterRestore: ctx => {
             ctx.store.reset()
-            ctx.store.hideAppMenu()
             ctx.store.hideAppModal()
         }
     }

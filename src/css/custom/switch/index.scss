@@ -7,3 +7,7 @@ $switch-paddle-background-active: $primary !default;
 $switch-paddle-offset: 0.25rem !default;
 $switch-paddle-transition: all 0.25s ease-out !default;
 $switch-focus: 1px dotted $grey-light !default;
+
+.switch[type=checkbox] + label {
+  padding-top: 0;
+}

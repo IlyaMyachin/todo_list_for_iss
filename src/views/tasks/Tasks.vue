@@ -16,7 +16,10 @@ section.section.tasks
           .column
             .field
               .control
-                button.button.is-info(@click="" type="submit") {{ t('app.actions.add') }}
+                button.button.is-primary.is-outlined(@click="" type="submit") {{ t('app.actions.add') }}
+    .block(v-if="store.filter.content.tasks_list.length")
+      TaskCardComponent(v-for="task in store.filter.content.tasks_list" :task="task" :key="task.id")
+    .block(v-else) Заданий нет
 </template>
 
 <script lang="ts">
@@ -25,8 +28,12 @@ import useTasksStore from '@/pinia/tasks'
 import useWatchers from '@/composables/useWatchers'
 import Task, {defaultTask} from '@/types/tasks/Task'
 import {useI18n} from 'vue-i18n'
+import TaskCardComponent from '@/components/tasks/TaskCard.vue'
 
 export default defineComponent({
+  components: {
+    TaskCardComponent
+  },
   setup() {
     const {t} = useI18n()
     const store = useTasksStore()

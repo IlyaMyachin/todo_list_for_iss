@@ -1,4 +1,29 @@
+@import 'base';
+@import 'elements';
+@import 'form';
 @import 'checkradio';
 @import "switch/index";
 
 // Custom classes
+.is-size{
+  &-35{
+    font-size: $size-35;
+  }
+  &-45{
+    font-size: $size-45;
+  }
+  &-55{
+    font-size: $size-55;
+  }
+  &-65{
+    font-size: $size-65;
+  }
+}
+
+.is-rounded{
+  @include round;
+}
+
+.context{
+  @include context;
+}
