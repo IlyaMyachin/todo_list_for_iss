@@ -1,0 +1,16 @@
+@charset "utf-8";
+// App font
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;400;500;600;700&display=swap');
+@import url('@/assets/fonts/CeraPro/index.scss');
+// Google icons font
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,0');
+// Badge
+@import "@creativebulma/bulma-badge/src/sass/index.sass";
+// Switch
+@import "bulma-switch/src/sass/index.sass";
+// Checkradio
+@import "bulma-checkradio/src/sass/index.sass";
+// Bulma
+@import "bulma/bulma";
+// Custom styling
+@import "./custom";
