@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import tasks from './tasks'
 
 const routes = [
     {
@@ -8,16 +9,10 @@ const routes = [
         name: 'index',
         component: DefaultLayout,
         redirect: {
-            name: 'index.index'
+            name: 'tasks.index'
         },
-        children: [
-            {
-                path: '',
-                name: 'index.index',
-                component: () => import('@/views/index/Index.vue'),
-            },
-        ],
-    }
+    },
+    ...tasks
 ]
 
 const router = createRouter({

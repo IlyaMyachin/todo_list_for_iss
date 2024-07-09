@@ -1,0 +1,22 @@
+.env
+.env.*
+
+/docs
+/temp
+_css
+
+/node_modules
+/dist
+
+package-lock.json
+
+# Logs
+/logs
+*.log
+npm-debug.log*
+
+# Editor directories and files
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
