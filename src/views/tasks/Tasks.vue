@@ -2,26 +2,27 @@
 section.section.tasks
   template(v-if="app_store.state.modal.active")
     TaskModalComponent(:modal_task="modal_task")
-  .container
+  .container.is-fullhd
     h1.title {{ t('app.title') }}
-    .context.block
-      form(@submit.prevent="addTask")
-        .columns
-          .column.is-one-third
-            .field
-              .control
-                input.input(v-model="new_task.title" placeholder="Название")
-          .column.is-one-third
-            .field
-              .control
-                input.input(v-model="new_task.description" placeholder="Описание")
-          .column
-            .field
-              .control
-                button.button.is-primary.is-outlined(@click="" type="submit") {{ t('app.actions.add') }}
-    .block(v-if="task_store.filter.content.tasks_list.length")
-      TaskCardComponent(v-for="task in task_store.filter.content.tasks_list" :task="task" :key="task.id" @click="openTaskModal(task)")
-    .block(v-else) Заданий нет
+    .columns
+      .column
+        .context.block
+          form(@submit.prevent="addTask")
+            .columns
+              .column.is-one-third
+                .field
+                  .control
+                    input.input(v-model="new_task.title" placeholder="Название")
+              .column
+                .field
+                  .control
+                    button.button.is-primary.is-outlined(@click="" type="submit") {{ t('app.actions.add') }}
+        .block(v-if="task_store.filter.content.tasks_list.length")
+          TaskCardComponent(v-for="task in task_store.filter.content.tasks_list" :task="task" :key="task.id" @click="openTaskModal(task)" :class="{'is-success': task.completed}")
+        .block(v-else) Заданий нет
+      .column.tasks-filter-column
+        .context.block
+          TasksFilterComponent
 </template>
 
 <script lang="ts">
@@ -30,13 +31,15 @@ import useAppStore from '@/pinia/app'
 import useTasksStore from '@/pinia/tasks'
 import Task, {defaultTask} from '@/types/tasks/Task'
 import {useI18n} from 'vue-i18n'
-import TaskCardComponent from '@/components/tasks/TaskCard.vue'
 import TaskModalComponent from '@/components/tasks/TaskModal.vue'
+import TaskCardComponent from '@/components/tasks/TaskCard.vue'
+import TasksFilterComponent from '@/components/tasks/TasksFilter.vue'
 
 export default defineComponent({
   components: {
     TaskCardComponent,
-    TaskModalComponent
+    TaskModalComponent,
+    TasksFilterComponent
   },
   setup() {
     const {t} = useI18n()
@@ -70,5 +73,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
+.tasks {
+  &-filter-column{
+    max-width: 360px;
+  }
+}
 </style>

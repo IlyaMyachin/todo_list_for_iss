@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia'
+import useStoreFilter from '@/composables/useStoreFilter'
 import Task from '@/types/tasks/Task'
 import TasksStore, {TasksFilter, defaultTasksFilter} from '@/types/tasks/TasksStore'
-import useStoreFilter from '@/composables/useStoreFilter'
 
 const defineTasksStore = defineStore('tasks', () => {
     const store = useStoreFilter<TasksFilter>(defaultTasksFilter)
@@ -12,10 +12,15 @@ const defineTasksStore = defineStore('tasks', () => {
         store.filter.value.content.tasks_list.push(task)
     }
 
+    const saveTask = (task: Task) => store.filter.value.content.tasks_list[store.filter.value.content.tasks_list.findIndex(item => item.id === task.id)] = task
+    const deleteTask = (task: Task) => store.filter.value.content.tasks_list = store.filter.value.content.tasks_list.filter(item => item.id !== task.id)
+
     return {
         ...store,
         ...{
             addTask,
+            saveTask,
+            deleteTask
         }
     }
 }, {

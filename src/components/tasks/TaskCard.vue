@@ -1,9 +1,8 @@
 <template lang="pug">
 .task-card.is-clickable
   .task-card-grid.is-size-65
-    .task-card-grid-title {{ task.title }}
-    .task-card-grid-description {{ task.description }}
-    .task-card-grid-state {{ task.completed ? 'Выполнено' : 'Не выполнено' }}
+    .task-card-grid-cell {{ task.id }}. {{ task.title }}
+    .task-card-grid-cell {{ task.description }}
 </template>
 
 <script lang="ts">
@@ -28,7 +27,7 @@ export default defineComponent({
 .task-card {
   &-grid {
     display: grid;
-    grid-template-columns: 5fr 5fr 2fr;
+    grid-template-columns: 10fr 2fr;
     grid-template-rows: auto;
     background: $scheme-main;
     margin-top: 0.375rem;

@@ -34,6 +34,8 @@ export const defaultTasksFilter = (): TasksFilter => {
 
 export interface TasksStateActions {
     addTask: (task: Task) => void
+    saveTask: (task: Task) => void
+    deleteTask: (task: Task) => void
 }
 
 export default interface TasksStore extends TasksStateActions {

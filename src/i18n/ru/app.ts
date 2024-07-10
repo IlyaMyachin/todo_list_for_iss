@@ -1,6 +1,8 @@
 export default {
     title: 'Список дел',
     actions: {
-        add: 'Добавить'
+        add: 'Добавить',
+        save: 'Сохранить',
+        delete: 'Удалить'
     }
 }
