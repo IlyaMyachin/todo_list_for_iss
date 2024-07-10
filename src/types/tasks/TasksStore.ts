@@ -6,6 +6,10 @@ export interface TasksFilter {
         sort?: {
             property?: string
             direction?: 'desc' | 'asc'
+        },
+        delete_mode: {
+            on: boolean,
+            selected_tasks: number[]
         }
     },
     content: {
@@ -22,6 +26,10 @@ export const defaultTasksFilter = (): TasksFilter => {
             sort: {
                 property: 'completed',
                 direction: 'desc'
+            },
+            delete_mode: {
+                on: false,
+                selected_tasks: []
             }
         },
         content: {

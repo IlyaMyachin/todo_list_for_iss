@@ -5,6 +5,10 @@ $checkbox-checked-width: .1rem !default;
 $checkradio-focus: 1px dotted $grey-light !default;
 $checkradio-top-offset: 0rem !default;
 
+.is-checkradio[type=checkbox] + label {
+  padding-left: 0;
+}
+
 .is-checkradio[type=checkbox] + label::before,
 .is-checkradio[type=checkbox] + label:before,
 .is-checkradio[type=radio] + label::before,

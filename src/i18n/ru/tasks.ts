@@ -4,6 +4,7 @@ export default {
     },
     props: {
         title: 'Название',
-        description: 'Описание'
+        description: 'Описание',
+        status: 'Статус'
     },
 }

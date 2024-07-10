@@ -18,7 +18,13 @@ section.section.tasks
                   .control
                     button.button.is-primary.is-outlined(@click="" type="submit") {{ t('app.actions.add') }}
         .block(v-if="task_store.filter.content.tasks_list.length")
-          TaskCardComponent(v-for="task in task_store.filter.content.tasks_list" :task="task" :key="task.id" @click="openTaskModal(task)" :class="{'is-success': task.completed}")
+          .tasks-grid.has-text-weight-medium
+            .tasks-grid-cell
+            .tasks-grid-cell {{ t('tasks.props.title') }}
+            .tasks-grid-cell {{ t('tasks.props.description') }}
+            .tasks-grid-cell {{ t('tasks.props.status') }}
+            .tasks-grid-cell
+          TaskCardComponent(v-for="task in task_store.filter.content.tasks_list" :task="task" :key="task.id" @click="openTaskModal(task)")
         .block(v-else) Заданий нет
       .column.tasks-filter-column
         .context.block
@@ -74,6 +80,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .tasks {
+  &-grid {
+    display: grid;
+    grid-template-columns: 50px 25% auto 15% 50px;
+    grid-template-rows: auto;
+    margin-top: 0.375rem;
+    border-bottom: 3px $scheme-invert solid;
+
+    > * {
+      padding: $block-spacing / 1.4;
+    }
+  }
+
   &-filter-column{
     max-width: 360px;
   }
