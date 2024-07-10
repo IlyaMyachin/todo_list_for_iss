@@ -1,5 +1,7 @@
 <template lang="pug">
 section.section.tasks
+  template(v-if="app_store.state.modal.active")
+    TaskModalComponent(:modal_task="modal_task")
   .container
     h1.title {{ t('app.title') }}
     .context.block
@@ -17,38 +19,50 @@ section.section.tasks
             .field
               .control
                 button.button.is-primary.is-outlined(@click="" type="submit") {{ t('app.actions.add') }}
-    .block(v-if="store.filter.content.tasks_list.length")
-      TaskCardComponent(v-for="task in store.filter.content.tasks_list" :task="task" :key="task.id")
+    .block(v-if="task_store.filter.content.tasks_list.length")
+      TaskCardComponent(v-for="task in task_store.filter.content.tasks_list" :task="task" :key="task.id" @click="openTaskModal(task)")
     .block(v-else) Заданий нет
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref, onBeforeMount, onBeforeUnmount, watch} from 'vue'
+import {defineComponent, ref} from 'vue'
+import useAppStore from '@/pinia/app'
 import useTasksStore from '@/pinia/tasks'
-import useWatchers from '@/composables/useWatchers'
 import Task, {defaultTask} from '@/types/tasks/Task'
 import {useI18n} from 'vue-i18n'
 import TaskCardComponent from '@/components/tasks/TaskCard.vue'
+import TaskModalComponent from '@/components/tasks/TaskModal.vue'
 
 export default defineComponent({
   components: {
-    TaskCardComponent
+    TaskCardComponent,
+    TaskModalComponent
   },
   setup() {
     const {t} = useI18n()
-    const store = useTasksStore()
+    const app_store = useAppStore()
+    const task_store = useTasksStore()
     const new_task = ref<Task>(defaultTask())
 
+    const modal_task = ref<Task>(defaultTask())
+    const openTaskModal = (task: Task) => {
+      modal_task.value = task
+      app_store.showAppModal()
+    }
+
     const addTask = () => {
-      store.addTask(new_task.value)
+      task_store.addTask(new_task.value)
       new_task.value = defaultTask()
     }
 
     return {
       t,
-      store,
+      app_store,
+      task_store,
       new_task,
+      modal_task,
       addTask,
+      openTaskModal
     }
   }
 })

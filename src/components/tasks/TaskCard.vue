@@ -13,7 +13,8 @@ import Task from '@/types/tasks/Task'
 export default defineComponent({
   props: {
     task: {
-      type: Object as PropType<Task>
+      type: Object as PropType<Task>,
+      required: true
     }
   },
   setup() {
