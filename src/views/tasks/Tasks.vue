@@ -17,6 +17,15 @@ section.section.tasks
                 .field
                   .control
                     button.button.is-primary.is-outlined(@click="" type="submit") {{ t('app.actions.add') }}
+        .context.block(v-if="task_store.filter.context.delete_mode.on && !!task_store.filter.context.delete_mode.selected_tasks?.length")
+          .columns.is-align-items-center
+            .column {{ t('tasks.selected.title', {tasks: t('tasks.selected.count', task_store.filter.context.delete_mode.selected_tasks?.length), from: task_store.filter.content.tasks_list?.length}) }}
+            .column.is-narrow
+              .field.is-grouped
+                .control
+                  button.button.is-outlined(@click="task_store.unselectTasks") {{ t('app.actions.unselect') }}
+                .control
+                  button.button.is-warning.is-outlined(@click="task_store.deleteSelectedTasks") {{ t('app.actions.delete') }}
         .block(v-if="task_store.filter.content.tasks_list.length")
           .tasks-grid.has-text-weight-medium
             .tasks-grid-cell
@@ -25,14 +34,14 @@ section.section.tasks
             .tasks-grid-cell {{ t('tasks.props.status') }}
             .tasks-grid-cell
           TaskCardComponent(v-for="task in task_store.filter.content.tasks_list" :task="task" :key="task.id" @click="openTaskModal(task)")
-        .block(v-else) Заданий нет
+        .block(v-else) {{ t('tasks.not_found') }}
       .column.tasks-filter-column
         .context.block
           TasksFilterComponent
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
+import {defineComponent, onBeforeMount, onBeforeUnmount, ref, watch} from 'vue'
 import useAppStore from '@/pinia/app'
 import useTasksStore from '@/pinia/tasks'
 import Task, {defaultTask} from '@/types/tasks/Task'
@@ -64,6 +73,21 @@ export default defineComponent({
       new_task.value = defaultTask()
     }
 
+    const sortTasks = () => {
+      switch(task_store.filter.context.sort.property) {
+        case 'all':
+      }
+    }
+
+    const watchTasksStoreFilterSort = watch(task_store.filter.context.sort, () => {
+
+    }, {
+      deep: true
+    })
+
+    onBeforeMount(watchTasksStoreFilterSort)
+    //onBeforeUnmount()
+
     return {
       t,
       app_store,
@@ -71,7 +95,7 @@ export default defineComponent({
       new_task,
       modal_task,
       addTask,
-      openTaskModal
+      openTaskModal,
     }
   }
 })

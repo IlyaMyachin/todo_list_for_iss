@@ -2,10 +2,9 @@ import Task from '@/types/tasks/Task'
 
 export interface TasksFilter {
     context: {
-        page?: number
-        sort?: {
-            property?: string
-            direction?: 'desc' | 'asc'
+        page: number
+        sort: {
+            property: string
         },
         delete_mode: {
             on: boolean,
@@ -14,7 +13,7 @@ export interface TasksFilter {
     },
     content: {
         completed: boolean,
-        tasks_count: number,
+        tasks_ids_count: number,
         tasks_list: Task[]
     }
 }
@@ -24,8 +23,7 @@ export const defaultTasksFilter = (): TasksFilter => {
         context: {
             page: 1,
             sort: {
-                property: 'completed',
-                direction: 'desc'
+                property: 'all',
             },
             delete_mode: {
                 on: false,
@@ -34,7 +32,7 @@ export const defaultTasksFilter = (): TasksFilter => {
         },
         content: {
             completed: true,
-            tasks_count: 0,
+            tasks_ids_count: 0,
             tasks_list: [],
         }
     }
@@ -44,6 +42,8 @@ export interface TasksStateActions {
     addTask: (task: Task) => void
     saveTask: (task: Task) => void
     deleteTask: (task: Task) => void
+    deleteSelectedTasks: () => void
+    unselectTasks: () => void
 }
 
 export default interface TasksStore extends TasksStateActions {

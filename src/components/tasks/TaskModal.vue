@@ -12,15 +12,16 @@ Teleport(to=".modal-custom-content")
         textarea.textarea(v-model="modal_task.description")
     .field.is-grouped.is-justify-content-space-between
       .control
-        button.button.is-primary(type="submit") {{ t('app.actions.save') }}
+        button.button.is-primary.is-outlined(type="submit") {{ t('app.actions.save') }}
       .control
-        button.button.is-danger(@click="deleteTask(modal_task)") {{ t('app.actions.delete') }}
+        button.button.is-warning.is-outlined(@click="deleteTask(modal_task)") {{ t('app.actions.delete') }}
 </template>
 
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
 import {useI18n} from 'vue-i18n'
 import useTasksStore from '@/pinia/tasks'
+import useAppStore from '@/pinia/app'
 import Task from '@/types/tasks/Task'
 
 export default defineComponent({
@@ -33,14 +34,22 @@ export default defineComponent({
   setup() {
     const {t} = useI18n()
     const task_store = useTasksStore()
+    const app_store = useAppStore()
 
-    const saveTask = (task: Task): void => task_store.saveTask(task)
-    const deleteTask = (task: Task): void => task_store.deleteTask(task)
+    const saveTask = (task: Task): void => {
+      task_store.saveTask(task)
+      app_store.hideAppModal()
+    }
+
+    const deleteTask = (task: Task): void => {
+      task_store.deleteTask(task)
+      app_store.hideAppModal()
+    }
 
     return {
       t,
       saveTask,
-      deleteTask
+      deleteTask,
     }
   }
 })

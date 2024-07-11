@@ -3,6 +3,11 @@ export default {
     actions: {
         add: 'Добавить',
         save: 'Сохранить',
-        delete: 'Удалить'
+        delete: 'Удалить',
+        unselect: 'Отменить выбор'
+    },
+    filter: {
+        title: 'Фильтр',
+        delete_mode: 'Режим удаления'
     }
 }
