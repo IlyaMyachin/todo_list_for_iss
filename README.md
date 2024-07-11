@@ -4,4 +4,5 @@
 
 ## Запуск приложениея
 npm install
+
 npm run dev
