@@ -4,13 +4,13 @@
 .block
   .field
     .control
-      input.switch.is-rounded.is-outlined#delete_mode(v-model="task_store.filter.context.delete_mode.on" type="checkbox")
+      input.switch.is-rounded.is-outlined#delete_mode(v-model="tasks_store.filter.context.delete_mode.on" type="checkbox")
       label.label(for="delete_mode") {{ t('app.filter.delete_mode') }}
 .block
   .field
     .control
       .select
-        select(v-model="task_store.filter.context.sort.property")
+        select(v-model="tasks_store.filter.context.sort.property")
           option(v-for="(option, alias) in sort_options" :value="alias") {{ option }}
 </template>
 
@@ -22,13 +22,13 @@ import useTasksStore from '@/pinia/tasks'
 export default defineComponent({
   setup() {
     const {t,tm} = useI18n()
-    const task_store = useTasksStore()
+    const tasks_store = useTasksStore()
 
     const sort_options = computed((): object => tm('tasks.filter.sort.options'))
 
     return {
       t,tm,
-      task_store,
+      tasks_store,
       sort_options
     }
   }

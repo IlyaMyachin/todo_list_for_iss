@@ -17,23 +17,23 @@ section.section.tasks
                 .field
                   .control
                     button.button.is-primary.is-outlined(@click="" type="submit") {{ t('app.actions.add') }}
-        .context.block(v-if="task_store.filter.context.delete_mode.on && !!task_store.filter.context.delete_mode.selected_tasks?.length")
+        .context.block(v-if="tasks_store.filter.context.delete_mode.on && !!tasks_store.filter.context.delete_mode.selected_tasks?.length")
           .columns.is-align-items-center
-            .column {{ t('tasks.selected.title', {tasks: t('tasks.selected.count', task_store.filter.context.delete_mode.selected_tasks?.length), from: task_store.filter.content.tasks_list?.length}) }}
+            .column {{ t('tasks.selected.title', {tasks: t('tasks.selected.count', tasks_store.filter.context.delete_mode.selected_tasks?.length), from: tasks_store.filter.content.tasks_list?.length}) }}
             .column.is-narrow
               .field.is-grouped
                 .control
-                  button.button.is-outlined(@click="task_store.unselectTasks") {{ t('app.actions.unselect') }}
+                  button.button.is-outlined(@click="tasks_store.unselectTasks") {{ t('app.actions.unselect') }}
                 .control
-                  button.button.is-warning.is-outlined(@click="task_store.deleteSelectedTasks") {{ t('app.actions.delete') }}
-        .block(v-if="task_store.filter.content.tasks_list.length")
+                  button.button.is-warning.is-outlined(@click="tasks_store.deleteSelectedTasks") {{ t('app.actions.delete') }}
+        .block(v-if="sorted_tasks.length")
           .tasks-grid.has-text-weight-medium
             .tasks-grid-cell
             .tasks-grid-cell {{ t('tasks.props.title') }}
             .tasks-grid-cell {{ t('tasks.props.description') }}
             .tasks-grid-cell {{ t('tasks.props.status') }}
             .tasks-grid-cell
-          TaskCardComponent(v-for="task in task_store.filter.content.tasks_list" :task="task" :key="task.id" @click="openTaskModal(task)")
+          TaskCardComponent(v-for="task in sorted_tasks" :task="task" :key="task.id" @click="openTaskModal(task)")
         .block(v-else) {{ t('tasks.not_found') }}
       .column.tasks-filter-column
         .context.block
@@ -42,10 +42,11 @@ section.section.tasks
 
 <script lang="ts">
 import {defineComponent, onBeforeMount, onBeforeUnmount, ref, watch} from 'vue'
+import {useI18n} from 'vue-i18n'
 import useAppStore from '@/pinia/app'
 import useTasksStore from '@/pinia/tasks'
+import useWatchers from '@/composables/useWatchers'
 import Task, {defaultTask} from '@/types/tasks/Task'
-import {useI18n} from 'vue-i18n'
 import TaskModalComponent from '@/components/tasks/TaskModal.vue'
 import TaskCardComponent from '@/components/tasks/TaskCard.vue'
 import TasksFilterComponent from '@/components/tasks/TasksFilter.vue'
@@ -59,8 +60,15 @@ export default defineComponent({
   setup() {
     const {t} = useI18n()
     const app_store = useAppStore()
-    const task_store = useTasksStore()
-    const new_task = ref<Task>(defaultTask())
+    const tasks_store = useTasksStore()
+
+    const {
+      watchers,
+      unwatchAll,
+    } = useWatchers([
+      'tasks_list',
+      'task_store_filter_sorting',
+    ])
 
     const modal_task = ref<Task>(defaultTask())
     const openTaskModal = (task: Task) => {
@@ -68,32 +76,48 @@ export default defineComponent({
       app_store.showAppModal()
     }
 
+    const new_task = ref<Task>(defaultTask())
     const addTask = () => {
-      task_store.addTask(new_task.value)
+      tasks_store.addTask(new_task.value)
       new_task.value = defaultTask()
     }
 
+    const sorted_tasks = ref<Task[]>([])
     const sortTasks = () => {
-      switch(task_store.filter.context.sort.property) {
+      switch(tasks_store.filter.context.sort.property) {
         case 'all':
+          sorted_tasks.value = tasks_store.filter.content.tasks_list
+          break
+        case 'completed':
+          sorted_tasks.value = tasks_store.filter.content.tasks_list.filter(task => task.completed)
+          break
+        case 'uncompleted':
+          sorted_tasks.value = tasks_store.filter.content.tasks_list.filter(task => !task.completed)
+          break
       }
     }
 
-    const watchTasksStoreFilterSort = watch(task_store.filter.context.sort, () => {
-
-    }, {
+    const watchTasksList = () => watchers['tasks_list'] = watch(() => tasks_store.filter.content.tasks_list, sortTasks, {
+      immediate: true,
       deep: true
     })
 
-    onBeforeMount(watchTasksStoreFilterSort)
-    //onBeforeUnmount()
+    const watchTasksStoreFilterSorting = () => watchers['task_store_filter_sorting'] = watch(tasks_store.filter.context.sort, sortTasks, {
+      deep: true
+    })
+
+
+    onBeforeMount(watchTasksStoreFilterSorting)
+    onBeforeMount(watchTasksList)
+    onBeforeUnmount(unwatchAll)
 
     return {
       t,
       app_store,
-      task_store,
+      tasks_store,
       new_task,
       modal_task,
+      sorted_tasks,
       addTask,
       openTaskModal,
     }

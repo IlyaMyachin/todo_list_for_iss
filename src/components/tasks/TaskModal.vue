@@ -33,16 +33,16 @@ export default defineComponent({
   },
   setup() {
     const {t} = useI18n()
-    const task_store = useTasksStore()
+    const tasks_store = useTasksStore()
     const app_store = useAppStore()
 
     const saveTask = (task: Task): void => {
-      task_store.saveTask(task)
+      tasks_store.saveTask(task)
       app_store.hideAppModal()
     }
 
     const deleteTask = (task: Task): void => {
-      task_store.deleteTask(task)
+      tasks_store.deleteTask(task)
       app_store.hideAppModal()
     }
 

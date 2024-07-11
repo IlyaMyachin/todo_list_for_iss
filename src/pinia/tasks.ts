@@ -15,9 +15,8 @@ const defineTasksStore = defineStore('tasks', () => {
     const saveTask = (task: Task) => store.filter.value.content.tasks_list[store.filter.value.content.tasks_list.findIndex(item => item.id === task.id)] = task
     const deleteTask = (task: Task) => store.filter.value.content.tasks_list = store.filter.value.content.tasks_list.filter(item => item.id !== task.id)
     const deleteSelectedTasks = () => {
-        store.filter.value.content.tasks_list = store.filter.value.content.tasks_list.filter(item => {
-            if (item.id) !store.filter.value.context.delete_mode.selected_tasks.includes(item.id)
-        })
+        store.filter.value.content.tasks_list = store.filter.value.content.tasks_list.filter(item => !store.filter.value.context.delete_mode.selected_tasks.includes(item.id ?? 0))
+
         store.filter.value.context.delete_mode.selected_tasks = []
     }
 
